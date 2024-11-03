@@ -32,8 +32,16 @@ body {
 
 .board {
   position: absolute;
-  left: 10px;
-  top: 10px;
+  
+}
+
+.board-container{
+  display: flex;
+  align-items: center;   
+  justify-content: center; 
+  height: 100vh;            
+  position: relative;
+
 }
 
 .square {
@@ -76,14 +84,71 @@ body {
   display: flex;
 }
 
+.currentConfig{
+  align-items: center;   
+  justify-content: center;             
+  position: relative;
+  top: -32vh;
+  user-select: none;
+}
+
 .score {
-  position: absolute;
-  left: 550px;
-  top: 10px;
+  display: flex;
+  align-items: center;   
+  justify-content: center;             
+  position: relative;
+  top: -31vh;
+  margin-right: 50px;
+  user-select: none;
 }
 
 .numMoves {
+  display: flex;
+  align-items: center;   
+  justify-content: center;           
+  position: relative;
+  top: -31vh;
+  margin-left: 50px;
+  user-select: none;
+}
+
+.score-moves-container{
+  display: flex;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;     
+  align-items: center;                 
+}
+
+.chooseConfigButton{
   position: absolute;
-  left: 550px;
-  top: 50px;
+  left: 75%;
+  top: 25%;
+  user-select: none;
+  color: black;
+  background-color: white;
+}
+
+.checkSolutionButton{
+  margin-left: 50px;
+  user-select: none;
+  color: black;
+  background-color: white;
+}
+
+.resetGameButton{
+  margin-right: 50px;
+  user-select: none;
+  color: black;
+  background-color: white;
+}
+
+.check-reset-container{
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: relative;
+  top: -21vh;
 }

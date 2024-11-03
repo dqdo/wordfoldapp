@@ -13,7 +13,7 @@ export default function Home() {
     forceRedraw(redraw + 1)
   }
 
-  function handleClick(row:number, column:number) {
+  function handleClick(row: number, column: number) {
     model.board.letters[row][column] += "!"  // HACK! Just to show something
     andRefreshDisplay()
 
@@ -23,7 +23,7 @@ export default function Home() {
   // change the style for the given square based on model. Space separated string.
   // So "square" is a regular square, while "square selected" is a selected square. Find
   // these CSS definitions inside the global.css file
-  function css(row:number, column:number) {
+  function css(row: number, column: number) {
     if (row === column) {
       return "square selected"
     }
@@ -32,46 +32,62 @@ export default function Home() {
 
   return (
     <div>
-      <div className="board">
-        <div className="button-container">
-          <button data-testid="0,0" className={css(0,0)} onClick={() => handleClick(0, 0)}>{model.contents(0,0)}</button>
-          <button data-testid="0,1" className={css(0,1)} onClick={() => handleClick(0, 1)}></button>
-          <button data-testid="0,2" className="square" onClick={() => handleClick(0, 2)}></button>
-          <button data-testid="0,3" className="square" onClick={() => handleClick(0, 3)}></button>
-          <button data-testid="0,4" className="square" onClick={() => handleClick(0, 4)}></button>
+      <div className="board-container">
+        <div className="board">
+          <div className="button-container">
+            <button data-testid="0,0" className={css(0, 0)} onClick={() => handleClick(0, 0)}>{model.contents(0, 0)}</button>
+            <button data-testid="0,1" className={css(0, 1)} onClick={() => handleClick(0, 1)}></button>
+            <button data-testid="0,2" className="square" onClick={() => handleClick(0, 2)}></button>
+            <button data-testid="0,3" className="square" onClick={() => handleClick(0, 3)}></button>
+            <button data-testid="0,4" className="square" onClick={() => handleClick(0, 4)}></button>
+          </div>
+          <div className="button-container">
+            <button data-testid="1,0" className="square" onClick={() => handleClick(1, 0)}></button>
+            <button data-testid="1,1" className={css(1, 1)} onClick={() => handleClick(1, 1)}></button>
+            <button data-testid="1,2" className="square" onClick={() => handleClick(1, 2)}></button>
+            <button data-testid="1,3" className="square" onClick={() => handleClick(1, 3)}></button>
+            <button data-testid="1,4" className="square" onClick={() => handleClick(1, 4)}></button>
+          </div>
+          <div className="button-container">
+            <button data-testid="2,0" className="square" onClick={() => handleClick(2, 0)}></button>
+            <button data-testid="2,1" className="square" onClick={() => handleClick(2, 1)}></button>
+            <button data-testid="2,2" className="square" onClick={() => handleClick(2, 2)}></button>
+            <button data-testid="2,3" className="square" onClick={() => handleClick(2, 3)}></button>
+            <button data-testid="2,4" className="square" onClick={() => handleClick(2, 4)}></button>
+          </div>
+          <div className="button-container">
+            <button data-testid="3,0" className="square" onClick={() => handleClick(3, 0)}></button>
+            <button data-testid="3,1" className="square" onClick={() => handleClick(3, 1)}></button>
+            <button data-testid="3,2" className="square" onClick={() => handleClick(3, 2)}></button>
+            <button data-testid="3,3" className="square" onClick={() => handleClick(3, 3)}></button>
+            <button data-testid="3,4" className="square" onClick={() => handleClick(3, 4)}></button>
+          </div>
+          <div className="button-container">
+            <button data-testid="4,0" className="square" onClick={() => handleClick(4, 0)}></button>
+            <button data-testid="4,1" className="square" onClick={() => handleClick(4, 1)}></button>
+            <button data-testid="4,2" className="square" onClick={() => handleClick(4, 2)}></button>
+            <button data-testid="4,3" className="square" onClick={() => handleClick(4, 3)}></button>
+            <button data-testid="4,4" className="square" onClick={() => handleClick(4, 4)}></button>
+          </div>
         </div>
-        <div className="button-container">
-          <button data-testid="1,0" className="square" onClick={() => handleClick(1, 0)}></button>
-          <button data-testid="1,1" className={css(1,1)} onClick={() => handleClick(1, 1)}></button>
-          <button data-testid="1,2" className="square" onClick={() => handleClick(1, 2)}></button>
-          <button data-testid="1,3" className="square" onClick={() => handleClick(1, 3)}></button>
-          <button data-testid="1,4" className="square" onClick={() => handleClick(1, 4)}></button>
+
+        <div className="info-container">
+        <label className="currentConfig">{"Current Configuration: " + "GOES HERE"}</label>
+          <div className="score-moves-container">
+            <label className="score"> {"Score: " + "GOES HERE"}</label>
+            <label className="numMoves">{"Number of Moves: " + "GOES HERE"}</label>
+          </div>
         </div>
-        <div className="button-container">
-          <button data-testid="2,0" className="square" onClick={() => handleClick(2, 0)}></button>
-          <button data-testid="2,1" className="square" onClick={() => handleClick(2, 1)}></button>
-          <button data-testid="2,2" className="square" onClick={() => handleClick(2, 2)}></button>
-          <button data-testid="2,3" className="square" onClick={() => handleClick(2, 3)}></button>
-          <button data-testid="2,4" className="square" onClick={() => handleClick(2, 4)}></button>
-        </div>
-        <div className="button-container">
-          <button data-testid="3,0" className="square" onClick={() => handleClick(3, 0)}></button>
-          <button data-testid="3,1" className="square" onClick={() => handleClick(3, 1)}></button>
-          <button data-testid="3,2" className="square" onClick={() => handleClick(3, 2)}></button>
-          <button data-testid="3,3" className="square" onClick={() => handleClick(3, 3)}></button>
-          <button data-testid="3,4" className="square" onClick={() => handleClick(3, 4)}></button>
-        </div>
-        <div className="button-container">
-          <button data-testid="4,0" className="square" onClick={() => handleClick(4, 0)}></button>
-          <button data-testid="4,1" className="square" onClick={() => handleClick(4, 1)}></button>
-          <button data-testid="4,2" className="square" onClick={() => handleClick(4, 2)}></button>
-          <button data-testid="4,3" className="square" onClick={() => handleClick(4, 3)}></button>
-          <button data-testid="4,4" className="square" onClick={() => handleClick(4, 4)}></button>
-        </div>
+
       </div>
-     
-      <label className="score">{"Score: " + "GOES HERE"}</label>
-      <label className="numMoves">{"Number of Moves: " + "GOES HERE"}</label>
+
+      <button className="chooseConfigButton"> {"Choose A Configuration"}</button>
+
+      <div className='check-reset-container'>
+      <button className="resetGameButton"> {"Reset Game"} </button>
+      <button className='checkSolutionButton'> {"Check Solution"} </button>
+      </div>
     </div>
   )
+
 }

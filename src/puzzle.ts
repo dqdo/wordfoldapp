@@ -1,4 +1,16 @@
 /** Configuration for pre-existing puzzles. You can use AS IS. */
+const config0 = {
+  "name": "#0",
+  "words" : [ "", "", "", "", "" ],
+  "theme" : "",
+  "initial": [ ['', '', '', '', ''],
+               ['', '', '', '', ''],
+               ['', '', '', '', ''],
+               ['', '', '', '', ''],
+               ['', '', '', '', '']
+             ]
+}
+
 const config1 = {
   "name": "#1",
   "words" : [ "CYAN", "YELLOW", "PURPLE", "MAUVE", "BLUE" ],
@@ -35,4 +47,4 @@ const config3 = {
              ]
 }
 
-export { config1, config2, config3 }
+export { config0, config1, config2, config3 }

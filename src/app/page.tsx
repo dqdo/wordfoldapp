@@ -8,7 +8,6 @@ export default function Home() {
   // initial instantiation of the Model comes from the first configuration
   const [model, setModel] = React.useState(new Model(0))
   const [redraw, forceRedraw] = React.useState(0)
-  const [currentConfig, setCurrentConfig] = React.useState<string | "">("")
 
   // helper function that forces React app to redraw whenever this is called.
   function andRefreshDisplay() {
@@ -16,31 +15,39 @@ export default function Home() {
   }
 
   function handleClick(row: number, column: number) {
-    model.board.letters[row][column] += "!"  // HACK! Just to show something
+    if (model.getConfig() == 0){
+      console.log("Please select a configuration")
+    }
+    else if (model.isSquareEmpty(row, column)){
+      console.log("Cannot click on empty square")
+      console.log("Selected Coordinates: (" + model.getSelectedSquare()?.row + "," + model.getSelectedSquare()?.column + ")")
+      console.log ("Selected Content: " + model.contents(row, column))
+    }
+    else {
+    model.setSelectedSquare(row, column);
     andRefreshDisplay()
-
-    alert("Clicked on row " + row + "," + column);
+    console.log("Selected Coordinates: (" + model.getSelectedSquare()?.row + "," + model.getSelectedSquare()?.column + ")")
+    console.log ("Selected Content: " + model.contents(row, column))
+    }
   }
 
   // creates a new model when a configuration is chosen. Changes the current
   // current configuration based on what was chosen.
   function setConfig(config: number) {
-    setModel(new Model(config));
-    setCurrentConfig(`#${config}`)
-    andRefreshDisplay;
-    console.log("Current Configuration #" + config);
+    model.updateConfig(config);
+    andRefreshDisplay();
+    console.log("Current Configuration #" + model.chosen);
   }
 
   // resets the configuration to its initial state by creating a new model.
-  function resetGame(currentConfig: string) {
-    if (currentConfig == "") {
+  function resetGame(config: number) {
+    if (!model.updateConfig(config)) {
       console.log("A configuration must be selected.")
     }
     else {
-      const config = parseInt(currentConfig.slice(1), 10);
-      setModel(new Model(config));
+      model.updateConfig(config)
       andRefreshDisplay();
-      console.log("Resetted Configuration #" + config);
+      console.log("Resetted Configuration #" + model.chosen);
     }
   }
 
@@ -48,7 +55,8 @@ export default function Home() {
   // So "square" is a regular square, while "square selected" is a selected square. Find
   // these CSS definitions inside the global.css file
   function css(row: number, column: number) {
-    if (row === column) {
+    const selected = model.getSelectedSquare();
+    if (selected && selected.row === row && selected.column === column) {
       return "square selected"
     }
     return "square"
@@ -59,50 +67,47 @@ export default function Home() {
       <div className="board-container">
         <div className="board">
           <div className="button-container">
-            <button data-testid="0,0" className={css(0, 0)} onClick={() => handleClick(0, 0)}>{model.contents(0, 0)}</button>
-            <button data-testid="0,1" className={css(0, 1)} onClick={() => handleClick(0, 1)}>{model.contents(0, 1)}</button>
-            <button data-testid="0,2" className="square" onClick={() => handleClick(0, 2)}>{model.contents(0, 2)}</button>
-            <button data-testid="0,3" className="square" onClick={() => handleClick(0, 3)}>{model.contents(0, 3)}</button>
-            <button data-testid="0,4" className="square" onClick={() => handleClick(0, 4)}>{model.contents(0, 4)}</button>
+            <button data-testid="0,0" className= {css(0,0)} onClick={() => handleClick(0, 0)}>{model.contents(0, 0)}</button>
+            <button data-testid="0,1" className= {css(0,1)} onClick={() => handleClick(0, 1)}>{model.contents(0, 1)}</button>
+            <button data-testid="0,2" className= {css(0,2)} onClick={() => handleClick(0, 2)}>{model.contents(0, 2)}</button>
+            <button data-testid="0,3" className= {css(0,3)} onClick={() => handleClick(0, 3)}>{model.contents(0, 3)}</button>
+            <button data-testid="0,4" className= {css(0,4)} onClick={() => handleClick(0, 4)}>{model.contents(0, 4)}</button>
           </div>
           <div className="button-container">
-            <button data-testid="1,0" className="square" onClick={() => handleClick(1, 0)}>{model.contents(1, 0)}</button>
-            <button data-testid="1,1" className={css(1, 1)} onClick={() => handleClick(1, 1)}>{model.contents(1, 1)}</button>
-            <button data-testid="1,2" className="square" onClick={() => handleClick(1, 2)}>{model.contents(1, 2)}</button>
-            <button data-testid="1,3" className="square" onClick={() => handleClick(1, 3)}>{model.contents(1, 3)}</button>
-            <button data-testid="1,4" className="square" onClick={() => handleClick(1, 4)}>{model.contents(1, 4)}</button>
+            <button data-testid="1,0" className= {css(1,0)} onClick={() => handleClick(1, 0)}>{model.contents(1, 0)}</button>
+            <button data-testid="1,1" className= {css(1,1)} onClick={() => handleClick(1, 1)}>{model.contents(1, 1)}</button>
+            <button data-testid="1,2" className= {css(1,2)} onClick={() => handleClick(1, 2)}>{model.contents(1, 2)}</button>
+            <button data-testid="1,3" className= {css(1,3)} onClick={() => handleClick(1, 3)}>{model.contents(1, 3)}</button>
+            <button data-testid="1,4" className= {css(1,4)} onClick={() => handleClick(1, 4)}>{model.contents(1, 4)}</button>
           </div>
           <div className="button-container">
-            <button data-testid="2,0" className="square" onClick={() => handleClick(2, 0)}>{model.contents(2, 0)}</button>
-            <button data-testid="2,1" className="square" onClick={() => handleClick(2, 1)}>{model.contents(2, 1)}</button>
-            <button data-testid="2,2" className="square" onClick={() => handleClick(2, 2)}>{model.contents(2, 2)}</button>
-            <button data-testid="2,3" className="square" onClick={() => handleClick(2, 3)}>{model.contents(2, 3)}</button>
-            <button data-testid="2,4" className="square" onClick={() => handleClick(2, 4)}>{model.contents(2, 4)}</button>
+            <button data-testid="2,0" className= {css(2,0)} onClick={() => handleClick(2, 0)}>{model.contents(2, 0)}</button>
+            <button data-testid="2,1" className= {css(2,1)} onClick={() => handleClick(2, 1)}>{model.contents(2, 1)}</button>
+            <button data-testid="2,2" className= {css(2,2)} onClick={() => handleClick(2, 2)}>{model.contents(2, 2)}</button>
+            <button data-testid="2,3" className= {css(2,3)} onClick={() => handleClick(2, 3)}>{model.contents(2, 3)}</button>
+            <button data-testid="2,4" className= {css(2,4)} onClick={() => handleClick(2, 4)}>{model.contents(2, 4)}</button>
           </div>
           <div className="button-container">
-            <button data-testid="3,0" className="square" onClick={() => handleClick(3, 0)}>{model.contents(3, 0)}</button>
-            <button data-testid="3,1" className="square" onClick={() => handleClick(3, 1)}>{model.contents(3, 1)}</button>
-            <button data-testid="3,2" className="square" onClick={() => handleClick(3, 2)}>{model.contents(3, 2)}</button>
-            <button data-testid="3,3" className="square" onClick={() => handleClick(3, 3)}>{model.contents(3, 3)}</button>
-            <button data-testid="3,4" className="square" onClick={() => handleClick(3, 4)}>{model.contents(3, 4)}</button>
+            <button data-testid="3,0" className= {css(3,0)} onClick={() => handleClick(3, 0)}>{model.contents(3, 0)}</button>
+            <button data-testid="3,1" className= {css(3,1)} onClick={() => handleClick(3, 1)}>{model.contents(3, 1)}</button>
+            <button data-testid="3,2" className= {css(3,2)} onClick={() => handleClick(3, 2)}>{model.contents(3, 2)}</button>
+            <button data-testid="3,3" className= {css(3,3)} onClick={() => handleClick(3, 3)}>{model.contents(3, 3)}</button>
+            <button data-testid="3,4" className= {css(3,4)} onClick={() => handleClick(3, 4)}>{model.contents(3, 4)}</button>
           </div>
           <div className="button-container">
-            <button data-testid="4,0" className="square" onClick={() => handleClick(4, 0)}>{model.contents(4, 0)}</button>
-            <button data-testid="4,1" className="square" onClick={() => handleClick(4, 1)}>{model.contents(4, 1)}</button>
-            <button data-testid="4,2" className="square" onClick={() => handleClick(4, 2)}>{model.contents(4, 2)}</button>
-            <button data-testid="4,3" className="square" onClick={() => handleClick(4, 3)}>{model.contents(4, 3)}</button>
-            <button data-testid="4,4" className="square" onClick={() => handleClick(4, 4)}>{model.contents(4, 4)}</button>
+            <button data-testid="4,0" className= {css(4,0)} onClick={() => handleClick(4, 0)}>{model.contents(4, 0)}</button>
+            <button data-testid="4,1" className= {css(4,1)} onClick={() => handleClick(4, 1)}>{model.contents(4, 1)}</button>
+            <button data-testid="4,2" className= {css(4,2)} onClick={() => handleClick(4, 2)}>{model.contents(4, 2)}</button>
+            <button data-testid="4,3" className= {css(4,3)} onClick={() => handleClick(4, 3)}>{model.contents(4, 3)}</button>
+            <button data-testid="4,4" className= {css(4,4)} onClick={() => handleClick(4, 4)}>{model.contents(4, 4)}</button>
           </div>
         </div>
 
-        <div className="info-container">
-          <label className="currentConfig">{"Current Configuration: " + (currentConfig || "None")}</label>
-          <div className="score-moves-container">
-            <label className="score"> {"Score: " + "GOES HERE"}</label>
-            <label className="numMoves">{"Number of Moves: " + "GOES HERE"}</label>
-          </div>
-        </div>
 
+        <div className="score-moves-container">
+          <label className="score"> {"Score: " + "GOES HERE"}</label>
+          <label className="numMoves">{"Number of Moves: " + "GOES HERE"}</label>
+        </div>
       </div>
 
       <select className="chooseConfigButton" onChange={(e) => setConfig(Number(e.target.value))}>
@@ -113,7 +118,7 @@ export default function Home() {
       </select>
 
       <div className='check-reset-container'>
-        <button className="resetGameButton" onClick={() => resetGame(currentConfig)}> {"Reset Game"} </button>
+        <button className="resetGameButton" onClick={() => resetGame(model.chosen)}> {"Reset Game"} </button>
         <button className='checkSolutionButton'> {"Check Solution"} </button>
       </div>
     </div>

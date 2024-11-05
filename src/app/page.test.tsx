@@ -12,7 +12,7 @@ test('Home', async () => {
   const scoresElement = getByText(/Score:/i);     // scrape text that should be there...
 
   const b00 = getByTestId('0,0')
-  expect(b00.textContent).toBe("E")
+  expect(b00.textContent).toBe("")
 
   cleanup()
 })

@@ -20,16 +20,19 @@ export default function Home() {
     if (model.getConfig() == 0) {
       console.log("Please select a configuration")
     }
+    // Cannot click on empty square.
     else if (model.isSquareEmpty(row, column)) {
       console.log("Cannot click on empty square")
       console.log("Selected Coordinates: (" + model.getSelectedSquare()?.row + "," + model.getSelectedSquare()?.column + ")")
       console.log("Selected Content: " + model.contents(row, column))
       andRefreshDisplay();
     }
-    else if (selected && model.isSelected(row, column) && model.isAdjacent(row, column, selected.row, selected.column) && model.appendedLessThanSixLetters(row, column,selected)) {
+    // Move Content: Square must be selected, next clicked square must be adjacent, and the appended contents must be less than 6 letters.
+    else if (selected && model.isSelected(row, column) && model.isAdjacent(row, column, selected.row, selected.column) && model.appendedLessThanSixLetters(row, column, selected)) {
       moveContent(row, column, selected);
       andRefreshDisplay();
     }
+    // Selecting a square with less than 6 letters.
     else if (model.lessThanSixLetters(row, column)) {
       model.setSelectedSquare(row, column);
       andRefreshDisplay()
@@ -38,6 +41,7 @@ export default function Home() {
     }
   }
 
+  // Appends currently selected square content and target square content. Makes the currently selected square empty, and unselects the square.
   function moveContent(row: number, column: number, selected: Coordinate) {
     model.appendContent(row, column, selected);
     model.makeEmpty(selected.row, selected.column);
@@ -72,9 +76,11 @@ export default function Home() {
 
     if (selected && selected.row === row && selected.column === column && model.contents(row, column).length > 3) {
       return "square selected adjusted";
-    } else if (model.contents(row, column).length > 3) {
+    }
+    else if (model.contents(row, column).length > 3) {
       return "square adjusted";
-    } else if (selected && selected.row === row && selected.column === column) {
+    }
+    else if (selected && selected.row === row && selected.column === column) {
       return "square selected";
     }
     return "square";

@@ -118,7 +118,7 @@ export class Model {
 
     appendContent(row: number, column: number, selected: Coordinate): boolean {
 
-        if ((this.contents(selected.row, selected.column).length + this.board.letters[row][column].length) > 6){
+        if ((this.contents(selected.row, selected.column).length + this.board.letters[row][column].length) > 6) {
             return false;
         }
         this.board.letters[row][column] = this.contents(selected.row, selected.column) + this.board.letters[row][column];
@@ -126,21 +126,21 @@ export class Model {
         return true;
     }
 
-    isAdjacent(row: number, column: number, selectedRow: number, selectedColumn: number) : boolean {
+    isAdjacent(row: number, column: number, selectedRow: number, selectedColumn: number): boolean {
         const rowDiff = Math.abs(row - selectedRow);
         const colDiff = Math.abs(column - selectedColumn);
         return (rowDiff === 1 && colDiff === 0) || (rowDiff === 0 && colDiff === 1);
     }
 
     appendedLessThanSixLetters(row: number, column: number, selected: Coordinate): boolean {
-        if ((this.contents(selected.row, selected.column).length + this.board.letters[row][column].length) > 6){
+        if ((this.contents(selected.row, selected.column).length + this.board.letters[row][column].length) > 6) {
             return false;
         }
         return true;
     }
 
-    lessThanSixLetters(row: number, column: number): boolean{
-        if (this.contents(row, column).length < 6){
+    lessThanSixLetters(row: number, column: number): boolean {
+        if (this.contents(row, column).length < 6) {
             return true;
         }
         return false;

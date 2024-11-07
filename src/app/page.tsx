@@ -4,6 +4,7 @@ import React from 'react'
 import { Coordinate, Model } from '../model'
 import { config } from 'process'
 
+
 export default function Home() {
   // initial instantiation of the Model comes from the first configuration
   const [model, setModel] = React.useState(new Model(0))
@@ -23,17 +24,18 @@ export default function Home() {
     // Cannot click on empty square.
     else if (model.isSquareEmpty(row, column)) {
       console.log("Cannot click on empty square")
-      console.log("Selected Coordinates: (" + model.getSelectedSquare()?.row + "," + model.getSelectedSquare()?.column + ")")
-      console.log("Selected Content: " + model.contents(row, column))
+      // console.log("Selected Coordinates: (" + model.getSelectedSquare()?.row + "," + model.getSelectedSquare()?.column + ")")
+      // console.log("Selected Content: " + model.contents(row, column))
       andRefreshDisplay();
     }
     // Move Content: Square must be selected, next clicked square must be adjacent, and the appended contents must be less than 6 letters.
-    else if (selected && model.isSelected(row, column) && model.isAdjacent(row, column, selected.row, selected.column) && model.appendedLessThanSixLetters(row, column, selected)) {
-      moveContent(row, column, selected);
+    else if (selected && model.canMove(row, column, selected) && model.solutionChecked == false) {
+      model.moveContent(row, column, selected);
+      console.log("Appended Content: " + model.contents(row, column))
       andRefreshDisplay();
     }
     // Selecting a square with less than 6 letters.
-    else if (model.lessThanSixLetters(row, column)) {
+    else if (model.lessThanSixLetters(row, column) && model.solutionChecked == false) {
       model.setSelectedSquare(row, column);
       andRefreshDisplay()
       console.log("Selected Coordinates: (" + model.getSelectedSquare()?.row + "," + model.getSelectedSquare()?.column + ")")
@@ -41,19 +43,29 @@ export default function Home() {
     }
   }
 
-  // Appends currently selected square content and target square content. Makes the currently selected square empty, and unselects the square.
-  function moveContent(row: number, column: number, selected: Coordinate) {
-    model.appendContent(row, column, selected);
-    model.makeEmpty(selected.row, selected.column);
-    model.unselectSquare();
-  }
-
   // creates a new model when a configuration is chosen. Changes the current
   // current configuration based on what was chosen.
   function setConfig(config: number) {
     model.updateConfig(config);
+    resetMessage();
     andRefreshDisplay();
     console.log("Current Configuration #" + model.chosen);
+  }
+
+  function checkSolution() {
+    model.checkWords()
+    let message = document.getElementsByClassName('message')[0] as HTMLLabelElement;
+    if (model.victory == true) {
+      message.innerHTML = "Woah, victory and success!!! Reset the game to play again or choose a different configuration to solve."
+      message.style.color = "green"
+      message.style.display = "flex"
+    }
+    else if (model.emptySquares == 20) {
+      message.innerHTML = "Womp womp, defeat and failure, you'll get it next time... Reset the game to try again or choose a different configuration to solve."
+      message.style.color = "red"
+      message.style.display = "flex"
+    }
+    andRefreshDisplay();
   }
 
   // resets the configuration to its initial state by creating a new model.
@@ -63,9 +75,16 @@ export default function Home() {
     }
     else {
       model.updateConfig(config)
+      resetMessage();
       andRefreshDisplay();
       console.log("Resetted Configuration #" + model.chosen);
     }
+  }
+
+  function resetMessage() {
+    let message = document.getElementsByClassName('message')[0] as HTMLLabelElement;
+    message.innerHTML = ""
+    message.style.display = "none"
   }
 
   // change the style for the given square based on model. Space separated string.
@@ -130,7 +149,7 @@ export default function Home() {
 
 
         <div className="score-moves-container">
-          <label className="score"> {"Score: " + "GOES HERE"}</label>
+          <label className="score"> {"Score: " + model.score}</label>
           <label className="numMoves">{"Number of Moves: " + model.moveCounter}</label>
         </div>
       </div>
@@ -144,8 +163,16 @@ export default function Home() {
 
       <div className='check-reset-container'>
         <button className="resetGameButton" onClick={() => resetGame(model.chosen)}> {"Reset Game"} </button>
-        <button className='checkSolutionButton'> {"Check Solution"} </button>
+        <button className="checkSolutionButton" onClick={() => checkSolution()}> {"Check Solution"} </button>
       </div>
+
+
+      <div className="message-container">
+        <label className="message"> </label>
+      </div>
+
+      <label className='header'> WordFold </label>
+
     </div>
   )
 

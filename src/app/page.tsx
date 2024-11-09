@@ -26,21 +26,19 @@ export default function Home() {
       console.log("Cannot click on empty square")
       // console.log("Selected Coordinates: (" + model.getSelectedSquare()?.row + "," + model.getSelectedSquare()?.column + ")")
       // console.log("Selected Content: " + model.contents(row, column))
-      andRefreshDisplay();
     }
     // Move Content: Square must be selected, next clicked square must be adjacent, and the appended contents must be less than 6 letters.
     else if (selected && model.canMove(row, column, selected) && model.solutionChecked == false) {
       model.moveContent(row, column, selected);
       console.log("Appended Content: " + model.contents(row, column))
-      andRefreshDisplay();
     }
     // Selecting a square with less than 6 letters.
     else if (model.lessThanSixLetters(row, column) && model.solutionChecked == false) {
       model.setSelectedSquare(row, column);
-      andRefreshDisplay()
       console.log("Selected Coordinates: (" + model.getSelectedSquare()?.row + "," + model.getSelectedSquare()?.column + ")")
       console.log("Selected Content: " + model.contents(row, column))
     }
+    andRefreshDisplay();
   }
 
   // creates a new model when a configuration is chosen. Changes the current
@@ -149,12 +147,12 @@ export default function Home() {
 
 
         <div className="score-moves-container">
-          <label className="score"> {"Score: " + model.score}</label>
-          <label className="numMoves">{"Number of Moves: " + model.moveCounter}</label>
+          <label className="score"  data-testid = "score-label">{"Score: " + model.score}</label>
+          <label className="numMoves" data-testid = "num-moves-label">{"Number of Moves: " + model.moveCounter}</label>
         </div>
       </div>
 
-      <select className="chooseConfigButton" onChange={(e) => setConfig(Number(e.target.value))}>
+      <select className="chooseConfigButton" data-testid = "changeConfig" onChange={(e) => setConfig(Number(e.target.value))}>
         <option value="" disabled selected> Choose a Configuration </option>
         <option value="1"> Configuration #1 </option>
         <option value="2"> Configuration #2 </option>
@@ -162,8 +160,8 @@ export default function Home() {
       </select>
 
       <div className='check-reset-container'>
-        <button className="resetGameButton" onClick={() => resetGame(model.chosen)}> {"Reset Game"} </button>
-        <button className="checkSolutionButton" onClick={() => checkSolution()}> {"Check Solution"} </button>
+        <button className="resetGameButton" data-testid = "reset-game-button" onClick={() => resetGame(model.chosen)}> {"Reset Game"} </button>
+        <button className="checkSolutionButton" data-testid = "check-solution-button" onClick={() => checkSolution()}> {"Check Solution"} </button>
       </div>
 
 
